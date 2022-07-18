@@ -1,44 +1,42 @@
-from statistics import mode, quantiles
-from tabnanny import check
-from typing import TYPE_CHECKING
-from django.shortcuts import render
-from tkinter import CASCADE
-from django.db import models
-from django.contrib.auth.models import User
-from django.contrib.auth.models import AbstractUser
 
-# Create your views here.
-class Team(models.Model):
-    team_name = models.CharField(max_length=255)
+from rest_framework.response import Response
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework import status, permissions, viewsets
+from rest_framework import permissions
+from rest_framework.views import APIView
+from .serializers import MealSerializer,Custom_userSerializer
+from .models import Meal, Custom_user
+from rest_framework.filters import SearchFilter, OrderingFilter
 
-class Types(models.Model):
-    type_name = models.CharField(max_length=255)
-    team = models.ForeignKey(Team,default=None)
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+from rest_framework_simplejwt.exceptions import InvalidToken
+from django_filters.rest_framework import DjangoFilterBackend
 
-class Items(models.Model):
-    item_name = models.CharField(max_length=255)
-    team = models.ForeignKey(Team, default=None)
-    total_qty = models.IntegerField()
-    taken_qty = models.IntegerField()
-    picture = models.ImageField()
+class CookieTokenRefreshSerializer(TokenRefreshSerializer):
+    refresh = None
+    def validate(self, attrs):
+        attrs['refresh'] = self.context['request'].COOKIES.get('refresh_token')
+        if attrs['refresh']:
+            return super().validate(attrs)
+        else:
+            raise InvalidToken('No valid token found in cookie \'refresh_token\'')
 
-class Custom_user(AbstractUser):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email =  models.CharField(max_length=255, unique=True)
-    password = models.CharField(max_length=255)
-    team = models.ForeignKey(Team, default=None)
-    username = None
-    #is_superuser = None
-    #is_staff = None
-    groups = None
-    user_permissions = None
-    last_login = None
+class CookieTokenObtainPairView(TokenObtainPairView):
+  def finalize_response(self, request, response, *args, **kwargs):
+    if response.data.get('refresh'):
+        cookie_max_age = 3600 * 24 * 14 # 14 days
+        response.set_cookie('access_token', response.data['access'], max_age=cookie_max_age, httponly=True )
+        del response.data['refresh']
+    return super().finalize_response(request, response, *args, **kwargs)
 
-    AUTH_USER_MODEL = 'account.user'
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
-
-    def __str__(self):
-            return self.first_name
-
+class CookieTokenRefreshView(TokenRefreshView):
+    def finalize_response(self, request, response, *args, **kwargs):
+        if response.data.get('refresh'):
+            cookie_max_age = 3600 * 24 * 14 # 14 days
+            response.set_cookie('refresh_token', response.data['refresh'], max_age=cookie_max_age, httponly=True )
+            del response.data['refresh']
+        return super().finalize_response(request, response, *args, **kwargs)
+    serializer_class = CookieTokenRefreshSerializer
+    
+#views Here
