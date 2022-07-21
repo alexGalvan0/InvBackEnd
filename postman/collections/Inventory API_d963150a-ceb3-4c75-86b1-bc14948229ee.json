@@ -6,123 +6,76 @@
 	},
 	"item": [
 		{
-			"name": "Sample endpoint: Returns details about a particular user",
-			"id": "a761badc-6dab-4c3e-976a-f65c4914206d",
+			"name": "http://127.0.0.1:8000/register/",
+			"id": "d10c47b7-4576-43a7-a330-0a85d73800a4",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json"
-					}
-				],
-				"url": {
-					"raw": "{{baseUrl}}/user?id=39888691",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"user"
-					],
-					"query": [
-						{
-							"key": "id",
-							"value": "39888691",
-							"description": "(Required) ID of the user"
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\":\"FIRST NAME\",\n    \"last_name\":\"LAST NAME\",\n    \"email\":\"EMAIL\",\n    \"password\":\"PASSWORD\",\n    \"team\":\"TEAM ID\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/register/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"register",
+						""
 					]
 				}
 			},
-			"response": [
-				{
-					"id": "a51bee22-733f-4753-9c2a-6e944f134713",
-					"name": "Sample response: Details about a user by ID",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"description": "Added as a part of security scheme: basic",
-								"key": "Authorization",
-								"value": "Basic <credentials>"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/user?id=39888691",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"user"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "39888691"
-								}
-							]
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/createteam/",
+			"id": "770f2f2d-5a54-4882-ad09-61a2efdedb41",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"team_name\":\"TEAM NAME\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"disabled": false,
-							"description": "A link to the next page of responses",
-							"key": "x-next",
-							"value": "mollit aliqua velit sint incididunt"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
-					],
-					"cookie": [],
-					"responseTime": null,
-					"body": "{\n  \"id\": -19589389,\n  \"name\": \"Excepteur exercitation\",\n  \"tag\": \"ex Lorem dolor\"\n}"
+					}
 				},
-				{
-					"id": "1122ad39-af70-4d74-b6fb-74d9e8e3ea41",
-					"name": "Unexpected error",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"description": "Added as a part of security scheme: basic",
-								"key": "Authorization",
-								"value": "Basic <credentials>"
-							}
-						],
-						"url": {
-							"raw": "{{baseUrl}}/user?id=39888691",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"user"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "39888691"
-								}
-							]
-						}
-					},
-					"status": "Internal Server Error",
-					"code": 500,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Content-Type",
-							"value": "application/json"
-						}
+				"url": {
+					"raw": "http://127.0.0.1:8000/createteam/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
 					],
-					"cookie": [],
-					"responseTime": null,
-					"body": "{\n  \"code\": 97778747,\n  \"message\": \"sit minim\"\n}"
+					"port": "8000",
+					"path": [
+						"createteam",
+						""
+					]
 				}
-			]
+			},
+			"response": []
 		}
 	],
 	"auth": {
