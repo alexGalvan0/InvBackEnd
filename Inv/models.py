@@ -11,6 +11,7 @@ from django.contrib.auth.models import AbstractUser
 #Create Team Model
 class Team (models.Model):
     team_name = models.CharField(max_length=255,unique=True)
+
     def __str__(self):
         return self.team_name
 

@@ -4,8 +4,8 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import status, permissions, viewsets
 from rest_framework import permissions
 from rest_framework.views import APIView
-from .serializers import MealSerializer,Custom_userSerializer
-from .models import Meal, Custom_user
+from .serializers import TeamSerializer,Custom_userSerializer,ItemTypeSerializer,ItemSerializer
+from .models import Team, Custom_user, ItemType, Item
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
@@ -40,3 +40,25 @@ class CookieTokenRefreshView(TokenRefreshView):
     serializer_class = CookieTokenRefreshSerializer
     
 #views Here
+
+#register View api endpoint to register users. 
+class RegisterView(APIView):
+    #permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def post(self, request):
+        serializer = Custom_userSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)
+
+
+#Create a team 
+class CreateTeamView(APIView):
+
+    def post(self, request):
+        serializer = TeamSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)

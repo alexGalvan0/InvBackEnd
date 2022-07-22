@@ -20,11 +20,12 @@ from django.conf.urls.static import static
 from rest_framework import routers
 from Inv import views
 from rest_framework_simplejwt import views as jwt_views
-from Inv.views import( )
+from Inv.views import(RegisterView,CreateTeamView )
 
 router = routers.DefaultRouter()
-router.register(r'userMeals', views.MealsViewSet,basename='MyModel')
+
 urlpatterns = [
-    path('', include(router.urls)),
     path('admin/', admin.site.urls),
+    path('register/',RegisterView.as_view(),name='create_user'),
+    path('createteam/',CreateTeamView.as_view(),name='create_team')
 ]
